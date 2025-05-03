@@ -1,0 +1,43 @@
+{
+  "name": "@aeony/aeony-cli",
+  "version": "0.1.0",
+  "description": "Aeony Engine CLI",
+  "main": "dist/index.js",
+  "files": [
+    "dist"
+  ],
+  "bin": {
+    "aeony": "./dist/index.js"
+  },
+  "type": "module",
+  "scripts": {
+    "prepare": "tsc -p tsconfig.build.json",
+    "build": "tsc -p tsconfig.build.json",
+    "prettier": "prettier --check ./tests ./src",
+    "lint": "eslint ./tests ./src",
+    "test": "vitest run"
+  },
+  "keywords": [],
+  "author": "Jurmerlo",
+  "license": "MIT",
+  "packageManager": "pnpm@10.10.0",
+  "dependencies": {
+    "@ltd/j-toml": "^1.38.0",
+    "archiver": "^7.0.1",
+    "commander": "^13.1.0",
+    "luamin": "^1.0.4",
+    "pngjs": "^7.0.0",
+    "rimraf": "^6.0.1",
+    "typescript": "^5.8.3",
+    "typescript-to-lua": "^1.31.0"
+  },
+  "devDependencies": {
+    "@aeony/prettier-config": "^1.0.0",
+    "@aeony/eslint-config": "^1.0.1",
+    "@types/archiver": "^6.0.3",
+    "@types/pngjs": "^6.0.5",
+    "eslint": "^9.26.0",
+    "prettier": "^3.5.3",
+    "vitest": "^3.1.2"
+  }
+}

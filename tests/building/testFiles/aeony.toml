@@ -1,0 +1,60 @@
+
+outDir = "export"
+
+bundle = true
+minify = true
+noAtlas = false
+
+[love]
+identity = "com.example.aeony"
+appendidentity = true
+version = "11.4"
+console = true
+accelerometerjoystick = true
+externalstorage = true
+gammacorrect = true
+
+[love.audio]
+mic = true
+mixwithsystem = true
+
+[love.window]
+title = "Aeony"
+icon = "assets/icon.png"
+width = 1280
+height = 720
+borderless = false
+resizable = true
+minwidth = 640
+minheight = 360
+fullscreen = false
+fullscreentype = "desktop"
+vsync = 0
+msaa = 1
+depth = 24
+stencil = 24
+display = 1
+highdpi = true
+usedpiscale = true
+x = 100
+y = 200
+
+[love.modules]
+audio = true
+data = true
+event = true
+font = true
+graphics = true
+image = true
+joystick = true
+keyboard = true
+math = true
+mouse = true
+physics = true
+sound = true
+system = true
+thread = true
+timer = true
+touch = true
+video = true
+window = true
