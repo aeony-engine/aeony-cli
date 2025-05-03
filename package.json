@@ -33,7 +33,7 @@
   },
   "devDependencies": {
     "@aeony/prettier-config": "^1.0.0",
-    "@aeony/eslint-config": "^1.0.1",
+    "@aeony/eslint-config": "^1.0.2",
     "@types/archiver": "^6.0.3",
     "@types/pngjs": "^6.0.5",
     "eslint": "^9.26.0",
