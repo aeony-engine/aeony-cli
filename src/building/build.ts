@@ -116,6 +116,15 @@ export function buildProject({ clean, project }: BuildProjectOptions): boolean {
 
   process.stdout.write('\nCompiling TypeScript to Lua...\n');
 
+  // Turn off the experimental warning for now.
+  process.removeAllListeners('warning');
+  process.on('warning', (warning) => {
+    if (warning.name === 'ExperimentalWarning') {
+      // Ignore experimental warning
+    } else {
+      process.stdout.write(`Warning: ${warning.name}: ${warning.message}\n`);
+    }
+  });
   let result;
   try {
     const plugins = [];
