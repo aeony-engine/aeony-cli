@@ -128,8 +128,8 @@ export function buildProject({ clean, project }: BuildProjectOptions): boolean {
   let result;
   try {
     const plugins = [];
-    if (config.hotReload) {
-      plugins.push({ name: path.join(__dirname, '../plugins/hotReload.js') });
+    if (config.liveReload) {
+      plugins.push({ name: path.join(__dirname, '../plugins/liveReload.js') });
     }
 
     if (config.minify) {

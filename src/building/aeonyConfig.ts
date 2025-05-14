@@ -20,9 +20,9 @@ export type AeonyConfig = {
   noAtlas?: boolean;
 
   /**
-   * Emit hot reload file to output directory for the reload watcher to check. Defaults to false.
+   * Emit live reload file to output directory for the reload watcher to check. Defaults to false.
    */
-  hotReload?: boolean;
+  liveReload?: boolean;
 
   /**
    * The paths to watch for changes. If not specified, `src`, `assets`, and `aeony.toml` are watched.

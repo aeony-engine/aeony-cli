@@ -15,7 +15,7 @@ describe('AeonyConfig', () => {
     expect(config.bundle).toBe(true);
     expect(config.minify).toBe(true);
     expect(config.noAtlas).toBe(false);
-    expect(config.hotReload).toBe(true);
+    expect(config.liveReload).toBe(true);
     expect(config.watchPaths).toEqual(['src', 'assets']);
 
     expect(config.love).toBeDefined();

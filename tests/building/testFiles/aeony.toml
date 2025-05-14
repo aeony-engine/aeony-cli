@@ -4,7 +4,7 @@ outDir = "export"
 bundle = true
 minify = true
 noAtlas = false
-hotReload = true
+liveReload = true
 watchPaths = ["src", "assets"]
 
 [love]

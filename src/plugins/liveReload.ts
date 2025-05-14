@@ -8,7 +8,7 @@ import * as tstl from 'typescript-to-lua';
 const plugin: tstl.Plugin = {
   afterEmit(_program, options, _emitHost, _result) {
     if (options.outDir) {
-      const filePath = path.join(options.outDir, 'hotReload.dat');
+      const filePath = path.join(options.outDir, 'liveReload.dat');
       writeFileSync(filePath, new Date().toTimeString());
     }
   },
