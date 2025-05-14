@@ -2,6 +2,7 @@ import { Command } from 'commander';
 
 import { packAtlas } from './atlas/main.js';
 import { buildAndRun, buildProject, BuildProjectOptions, packLove } from './building/build.js';
+import { watchForChanges } from './building/watch.js';
 
 type PackAtlasOptions = {
   project?: string;
@@ -29,7 +30,7 @@ program
 
 program
   .command('build')
-  .description('Build the Lumi project')
+  .description('Build the Aeony project')
   .option('-c --clean', 'Clean the output folder before building.')
   .option('-p --project <string>', 'The project folder.')
   .action((options: BuildProjectOptions) => {
@@ -38,11 +39,20 @@ program
 
 program
   .command('run')
-  .description('Build and run the Lumi project.')
+  .description('Build and run the Aeony project.')
   .option('-c --clean', 'Clean the output folder before building.')
   .option('-p --project <string>', 'The project folder.')
   .action((options: BuildProjectOptions) => {
     buildAndRun(options);
+  });
+
+program
+  .command('watch')
+  .description('Watch for changes and rebuild the project.')
+  .option('-c --clean', 'Clean the output folder before building.')
+  .option('-p --project <string>', 'The project folder.')
+  .action((options: BuildProjectOptions) => {
+    watchForChanges(options);
   });
 
 program.parse();

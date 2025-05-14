@@ -15,6 +15,7 @@ describe('AeonyConfig', () => {
     expect(config.bundle).toBe(true);
     expect(config.minify).toBe(true);
     expect(config.noAtlas).toBe(false);
+    expect(config.hotReload).toBe(true);
 
     expect(config.love).toBeDefined();
     expect(config.love?.identity).toBe('com.example.aeony');

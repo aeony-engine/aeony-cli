@@ -1,4 +1,3 @@
-import TOML from '@ltd/j-toml';
 import archiver from 'archiver';
 import { spawnSync } from 'child_process';
 import { cpSync, createWriteStream, existsSync, mkdirSync, readFileSync, writeFileSync } from 'fs';
@@ -7,9 +6,14 @@ import path from 'path';
 import { rimrafSync } from 'rimraf';
 import * as ts from 'typescript';
 import * as tstl from 'typescript-to-lua';
+import { fileURLToPath } from 'url';
 
 import { packAtlas } from '../atlas/main.js';
 import { AeonyConfig } from './aeonyConfig.js';
+import { getOutPath, getProjectPath, loadConfig } from './configLoader.js';
+
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
 
 export type PackLoveOptions = {
   /**
@@ -71,27 +75,14 @@ export function packLove({ name, project }: PackLoveOptions): void {
  * @returns `true` if the build was successful, `false` otherwise.
  */
 export function buildProject({ clean, project }: BuildProjectOptions): boolean {
-  let projectPath = process.cwd();
-  if (project) {
-    if (path.isAbsolute(project)) {
-      projectPath = project;
-    } else {
-      projectPath = path.join(process.cwd(), project);
-    }
-  }
-  process.chdir(projectPath);
+  const projectPath = getProjectPath(project);
+  const config = loadConfig(projectPath);
 
-  const configPath = path.join(projectPath, 'aeony.toml');
-
-  if (!existsSync(configPath)) {
-    process.stdout.write(`Error: aeony.toml not found in ${projectPath}\n`);
+  if (!config) {
     return false;
   }
 
-  const data = readFileSync(configPath);
-  const config = TOML.parse(data.toString(), 1, undefined, false) as AeonyConfig;
-
-  const outPath = path.join(projectPath, config.outDir ? config.outDir : 'export');
+  const outPath = getOutPath(projectPath, config);
   if (clean) {
     process.stdout.write('Cleaning output folder...\n');
     rimrafSync(outPath);
@@ -104,7 +95,7 @@ export function buildProject({ clean, project }: BuildProjectOptions): boolean {
   if (!config.noAtlas) {
     process.stdout.write('Packing atlases...\n');
     try {
-      packAtlas(configPath);
+      packAtlas(path.join(projectPath, 'aeony.toml'));
     } catch (error) {
       process.stdout.write(`Error: Failed to pack atlases: ${(error as Error).message}\n`);
       return false;
@@ -127,12 +118,18 @@ export function buildProject({ clean, project }: BuildProjectOptions): boolean {
 
   let result;
   try {
+    const plugins = [];
+    if (config.hotReload) {
+      plugins.push({ name: path.join(__dirname, '../plugins/hotReload.js') });
+    }
+
     if (config.minify) {
       result = tstl.transpileProject(path.join(projectPath, 'tsconfig.json'), {
         luaBundle: 'main.lua',
         luaBundleEntry: 'src/main.ts',
         noEmitOnError: true,
         outDir: outPath,
+        luaPlugins: plugins,
       });
 
       // No errors while transpiling, minify the output.
@@ -150,11 +147,13 @@ export function buildProject({ clean, project }: BuildProjectOptions): boolean {
           luaBundleEntry: 'src/main.ts',
           noEmitOnError: true,
           outDir: outPath,
+          luaPlugins: plugins,
         });
       } else {
         result = tstl.transpileProject(path.join(projectPath, 'tsconfig.json'), {
           noEmitOnError: true,
           outDir: outPath,
+          luaPlugins: plugins,
         });
       }
     }
@@ -183,9 +182,14 @@ export function buildProject({ clean, project }: BuildProjectOptions): boolean {
  */
 export function buildAndRun(options: BuildProjectOptions): void {
   if (buildProject(options)) {
-    process.stdout.write('Running Love2D...\n');
-    spawnSync('love', ['export'], { stdio: 'inherit' });
-    process.stdout.write('Finished running Love2D.\n');
+    const projectPath = getProjectPath(options.project);
+    const config = loadConfig(projectPath);
+    if (config) {
+      const outPath = getOutPath(projectPath, config);
+      process.stdout.write('Running Love2D...\n');
+      spawnSync('love', [outPath], { stdio: 'inherit' });
+      process.stdout.write('Finished running Love2D.\n');
+    }
   }
 }
 

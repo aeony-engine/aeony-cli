@@ -4,6 +4,7 @@ outDir = "export"
 bundle = true
 minify = true
 noAtlas = false
+hotReload = true
 
 [love]
 identity = "com.example.aeony"
