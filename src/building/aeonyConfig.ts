@@ -25,6 +25,11 @@ export type AeonyConfig = {
   hotReload?: boolean;
 
   /**
+   * The paths to watch for changes. If not specified, `src`, `assets`, and `aeony.toml` are watched.
+   */
+  watchPaths?: string[];
+
+  /**
    * The Love2D configuration options.
    */
   love?: LoveConfig;

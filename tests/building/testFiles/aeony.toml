@@ -5,6 +5,7 @@ bundle = true
 minify = true
 noAtlas = false
 hotReload = true
+watchPaths = ["src", "assets"]
 
 [love]
 identity = "com.example.aeony"
